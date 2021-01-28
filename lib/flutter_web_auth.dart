@@ -47,6 +47,14 @@ class FlutterWebAuth {
     }) as String;
   }
 
+  static Future<String> getCallbackUrl(@required String callbackUrlScheme) async {
+    String url = await _channel.invokeMethod('getCallbackUrl', <String, dynamic>{
+      'callbackUrlScheme': callbackUrlScheme
+    }) as String;
+    _cleanUpDanglingCalls();
+    return url;
+  }
+
   /// On Android, the plugin has to store the Result callbacks in order to pass the result back to the caller of
   /// `authenticate`. But if that result never comes the callback will dangle around forever. This can be called to
   /// terminate all `authenticate` calls with an error.

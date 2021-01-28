@@ -15,6 +15,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 class FlutterWebAuthPlugin(private val context: Context): MethodCallHandler {
   companion object {
     val callbacks = mutableMapOf<String, Result>()
+    val callbackUrls = mutableMapOf<String, String>()
 
     @JvmStatic
     fun registerWith(registrar: Registrar) {
@@ -49,6 +50,11 @@ class FlutterWebAuthPlugin(private val context: Context): MethodCallHandler {
           }
           callbacks.clear()
           resultCallback.success(null)
+        }
+        "getCallbackUrl" -> {
+          val callbackUrlScheme = call.argument<String>("callbackUrlScheme")!!
+          val url = callbackUrls.remove(callbackUrlScheme)
+          resultCallback.success(url)
         }
         else -> resultCallback.notImplemented()
     }

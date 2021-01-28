@@ -13,6 +13,7 @@ class CallbackActivity: Activity() {
 
     if (scheme != null) {
       FlutterWebAuthPlugin.callbacks.remove(scheme)?.success(url.toString())
+      FlutterWebAuthPlugin.callbackUrls[scheme] = url.toString()
     }
 
     finish()
