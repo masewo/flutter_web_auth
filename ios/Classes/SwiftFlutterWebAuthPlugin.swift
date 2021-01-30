@@ -65,6 +65,9 @@ public class SwiftFlutterWebAuthPlugin: NSObject, FlutterPlugin {
         } else if (call.method == "cleanUpDanglingCalls") {
             // we do not keep track of old callbacks on iOS, so nothing to do here
             result(nil)
+        } else if (call.method == "getCallbackUrl") {
+            // we do not keep track of old callbacks on iOS, so nothing to do here
+            result(nil)
         } else {
             result(FlutterMethodNotImplemented)
         }
