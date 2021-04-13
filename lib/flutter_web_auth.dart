@@ -44,7 +44,7 @@ class FlutterWebAuth {
     }) as String;
   }
 
-  static Future<String> getCallbackUrl(required String callbackUrlScheme) async {
+  static Future<String> getCallbackUrl(String callbackUrlScheme) async {
     String url = await _channel.invokeMethod('getCallbackUrl', <String, dynamic>{
       'callbackUrlScheme': callbackUrlScheme
     }) as String;
