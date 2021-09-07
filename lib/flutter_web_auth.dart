@@ -29,25 +29,24 @@ class FlutterWebAuth {
   /// The page pointed to by [url] will be loaded and displayed to the user. From the page, the user can authenticate herself and grant access to the app. On completion, the service will send a callback URL with an authentication token, and this URL will be result of the returned [Future].
   ///
   /// [callbackUrlScheme] should be a string specifying the scheme of the url that the page will redirect to upon successful authentication.
+  /// [preferEphemeral] if this is specified as `true`, an ephemeral web browser session will be used where possible (`FLAG_ACTIVITY_NO_HISTORY` on Android, `prefersEphemeralWebBrowserSession` on iOS/macOS)
   static Future<String> authenticate(
       {required String url,
-       required String callbackUrlScheme,
-       bool preferEphemeralSession = false,
-       bool saveHistory = true}) async {
-    WidgetsBinding.instance?.removeObserver(_resumedObserver); // safety measure so we never add this observer twice
+      required String callbackUrlScheme,
+      bool? preferEphemeral}) async {
+    WidgetsBinding.instance?.removeObserver(
+        _resumedObserver); // safety measure so we never add this observer twice
     WidgetsBinding.instance?.addObserver(_resumedObserver);
     return await _channel.invokeMethod('authenticate', <String, dynamic>{
       'url': url,
       'callbackUrlScheme': callbackUrlScheme,
-      'preferEphemeralSession': preferEphemeralSession,
-      'saveHistory': saveHistory,
+      'preferEphemeral': preferEphemeral ?? false,
     }) as String;
   }
 
   static Future<String> getCallbackUrl(String callbackUrlScheme) async {
-    String url = await _channel.invokeMethod('getCallbackUrl', <String, dynamic>{
-      'callbackUrlScheme': callbackUrlScheme
-    }) as String;
+    String url = await _channel.invokeMethod('getCallbackUrl',
+        <String, dynamic>{'callbackUrlScheme': callbackUrlScheme}) as String;
     _cleanUpDanglingCalls();
     return url;
   }
