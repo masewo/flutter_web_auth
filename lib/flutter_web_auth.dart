@@ -33,7 +33,8 @@ class FlutterWebAuth {
   static Future<String> authenticate(
       {required String url,
       required String callbackUrlScheme,
-      bool? preferEphemeral}) async {
+      bool? preferEphemeral,
+      bool? openUrl}) async {
     WidgetsBinding.instance?.removeObserver(
         _resumedObserver); // safety measure so we never add this observer twice
     WidgetsBinding.instance?.addObserver(_resumedObserver);
@@ -41,6 +42,7 @@ class FlutterWebAuth {
       'url': url,
       'callbackUrlScheme': callbackUrlScheme,
       'preferEphemeral': preferEphemeral ?? false,
+      'openUrl': openUrl ?? true,
     }) as String;
   }
 

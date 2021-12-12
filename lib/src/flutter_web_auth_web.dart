@@ -18,7 +18,8 @@ class FlutterWebAuthPlugin {
     switch (call.method) {
       case 'authenticate':
         final String url = call.arguments['url'];
-        return _authenticate(url);
+        final bool openUrl = call.arguments['openUrl'];
+        return _authenticate(url, openUrl);
       default:
         throw PlatformException(
             code: 'Unimplemented',
@@ -27,8 +28,10 @@ class FlutterWebAuthPlugin {
     }
   }
 
-  static Future<String> _authenticate(String url) async {
-    context.callMethod('open', [url]);
+  static Future<String> _authenticate(String url, bool openUrl) async {
+    if (openUrl) {
+      context.callMethod('open', [url]);
+    }
     await for (MessageEvent messageEvent in window.onMessage) {
       if (messageEvent.origin == Uri.base.origin) {
         final flutterWebAuthMessage = messageEvent.data['flutter-web-auth'];
